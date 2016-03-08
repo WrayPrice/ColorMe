@@ -52,7 +52,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>Simulator</platformTool>
         <languageToolchain>XC16</languageToolchain>
-        <languageToolchainVersion>1.24</languageToolchainVersion>
+        <languageToolchainVersion>1.00</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
@@ -86,7 +86,7 @@
         <property key="enable-ansi-warnings" value="false"/>
         <property key="enable-fatal-warnings" value="false"/>
         <property key="enable-large-arrays" value="false"/>
-        <property key="enable-omit-frame-pointer" value="true"/>
+        <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-procedural-abstraction" value="false"/>
         <property key="enable-short-double" value="false"/>
         <property key="enable-symbols" value="true"/>
@@ -186,7 +186,7 @@
       </C30-LD>
       <C30Global>
         <property key="common-include-directories"
-                  value="..\..\Source\include;..\..\Source\portable\MPLAB\PIC24_dsPIC;..\Common\include"/>
+                  value="..\..\Source;..\..\Source\include;..\..\Source\portable\MPLAB\PIC24_dsPIC"/>
         <property key="dual-boot-partition" value="0"/>
         <property key="fast-math" value="false"/>
         <property key="generic-16-bit" value="false"/>
@@ -260,71 +260,6 @@
         <property key="programoptions.uselvpprogramming" value="false"/>
         <property key="voltagevalue" value="3.25"/>
       </ICD3PlatformTool>
-      <PICkit3PlatformTool>
-        <property key="ADC 1" value="true"/>
-        <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="CRC" value="true"/>
-        <property key="Freeze All Other Peripherals" value="true"/>
-        <property key="I2C1" value="true"/>
-        <property key="I2C2" value="true"/>
-        <property key="INPUT CAPTURE 1" value="true"/>
-        <property key="INPUT CAPTURE 2" value="true"/>
-        <property key="INPUT CAPTURE 3" value="true"/>
-        <property key="INPUT CAPTURE 4" value="true"/>
-        <property key="INPUT CAPTURE 5" value="true"/>
-        <property key="OUTPUT COMPARE 1" value="true"/>
-        <property key="OUTPUT COMPARE 2" value="true"/>
-        <property key="OUTPUT COMPARE 3" value="true"/>
-        <property key="OUTPUT COMPARE 4" value="true"/>
-        <property key="OUTPUT COMPARE 5" value="true"/>
-        <property key="SPI 1" value="true"/>
-        <property key="SPI 2" value="true"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="TIMER1" value="true"/>
-        <property key="TIMER2" value="true"/>
-        <property key="TIMER3" value="true"/>
-        <property key="TIMER4" value="true"/>
-        <property key="TIMER5" value="true"/>
-        <property key="ToolFirmwareFilePath"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
-        <property key="UART 1" value="true"/>
-        <property key="UART 2" value="true"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="true"/>
-        <property key="memories.configurationmemory" value="true"/>
-        <property key="memories.configurationmemory2" value="true"/>
-        <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="true"/>
-        <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="true"/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.end" value="0x157fb"/>
-        <property key="memories.programmemory.partition2" value="true"/>
-        <property key="memories.programmemory.partition2.end"
-                  value="${memories.programmemory.partition2.end.value}"/>
-        <property key="memories.programmemory.partition2.start"
-                  value="${memories.programmemory.partition2.start.value}"/>
-        <property key="memories.programmemory.start" value="0x0"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmertogo.imagename" value=""/>
-        <property key="programoptions.donoteraseauxmem" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.pgmspeed" value="2"/>
-        <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.preserveprogramrange.end" value="0x157fb"/>
-        <property key="programoptions.preserveprogramrange.start" value="0x0"/>
-        <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programcalmem" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.testmodeentrymethod" value="VPPFirst"/>
-        <property key="programoptions.usehighvoltageonmclr" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="3.25"/>
-      </PICkit3PlatformTool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>
@@ -409,10 +344,6 @@
                   value="report"/>
         <property key="warningmessagebreakoptions.W0013_CORE_STACK_UNDERFLOW_RESET"
                   value="report"/>
-        <property key="warningmessagebreakoptions.W0014_CORE_STACK_OVERFLOW"
-                  value="report"/>
-        <property key="warningmessagebreakoptions.W0015_CORE_STACK_UNDERFLOW"
-                  value="report"/>
         <property key="warningmessagebreakoptions.W0101_SIM_UPDATE_FAILED"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0102_SIM_PERIPH_MISSING"
@@ -464,14 +395,6 @@
                   value="report"/>
         <property key="warningmessagebreakoptions.W0222_ADC_OVERFLOW" value="report"/>
         <property key="warningmessagebreakoptions.W0223_ADC_UNDERFLOW" value="report"/>
-        <property key="warningmessagebreakoptions.W0224_ADC_CTMU_NOT_SUPPORTED"
-                  value="report"/>
-        <property key="warningmessagebreakoptions.W0225_ADC_INVALID_CH0S"
-                  value="report"/>
-        <property key="warningmessagebreakoptions.W0226_ADC_VBAT_NOT_SUPPORTED"
-                  value="report"/>
-        <property key="warningmessagebreakoptions.W0227_ADC_INVALID_ADCS"
-                  value="report"/>
         <property key="warningmessagebreakoptions.W1201_DATAFLASH_MEM_OUTSIDE_RANGE"
                   value="report"/>
         <property key="warningmessagebreakoptions.W1202_DATAFLASH_ERASE_WHILE_LOCKED"

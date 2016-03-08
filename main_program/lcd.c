@@ -109,7 +109,7 @@ static void prvLCDClear( void );
 #define lcdSHORT_DELAY		3
 
 /* SFR that seems to be missing from the standard header files. */
-//#define PMAEN				*( ( unsigned short * ) 0x60c )
+#define PMAEN				*( ( unsigned short * ) 0x60c )
 
 /* LCD commands. */
 #define lcdDEFAULT_FUNCTION	0x3c

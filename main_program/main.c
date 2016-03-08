@@ -101,38 +101,46 @@
 
 /* Standard includes. */
 #include <stdio.h>
-#include "p24FJ128GA010.h"
-
-
-#define configASSERT( x )     if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }
 
 
 /* Scheduler includes. */
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "p24FJ128GA010.h"
+
+/*---------------------------------------------------------------------------------------------*/
+//Macros
+
+#define NumOfLeds 1  //done for simplicity
+#define StartVal 255 //set everything to high for simplicity
+#define T0H 3        //represents time high for a code 0
+#define T0L 9        // represents time low for a code 0
+#define T1H 6        // represents time high for a code 1
+#define T1L 6        // represents time low for a code 1
+#define reset 80     //time for reset
 
 
-// CONFIG2
-#pragma config POSCMOD = XT             // Primary Oscillator Select (XT Oscillator mode selected)
-#pragma config OSCIOFNC = OFF           // Primary Oscillator Output Function (OSC2/CLKO/RC15 functions as CLKO (FOSC/2))
-#pragma config FCKSM = CSDCMD           // Clock Switching and Monitor (Clock switching and Fail-Safe Clock Monitor are disabled)
-#pragma config FNOSC = PRIPLL           // Oscillator Select (Primary Oscillator with PLL module (HSPLL, ECPLL))
-#pragma config IESO = OFF                // Internal External Switch Over Mode (IESO mode (Two-Speed Start-up) enabled)
-
-// CONFIG1
-#pragma config WDTPS = PS32768          // Watchdog Timer Postscaler (1:32,768)
-#pragma config FWPSA = PR128            // WDT Prescaler (Prescaler ratio of 1:128)
-#pragma config WINDIS = ON              // Watchdog Timer Window (Standard Watchdog Timer enabled,(Windowed-mode is disabled))
-#pragma config FWDTEN = OFF             // Watchdog Timer Enable (Watchdog Timer is disabled)
-#pragma config ICS = PGx2               // Comm Channel Select (Emulator/debugger uses EMUC2/EMUD2)
-#pragma config GWRP = OFF               // General Code Segment Write Protect (Writes to program memory are allowed)
-#pragma config GCP = OFF                // General Code Segment Code Protect (Code protection is disabled)
-#pragma config JTAGEN = OFF             // JTAG Port Enable (JTAG port is disabled)
-
-
-
-
+/*---------------------------------------------------------------------------------------------*/
+ int CONFIG2 __attribute__((space(prog), address(0x157FC))) = 0x7BFD ;
+//_CONFIG2(
+//    POSCMOD_XT &         // Primary Oscillator Select (XT Oscillator mode selected)
+//    OSCIOFNC_OFF &       // Primary Oscillator Output Function (OSC2/CLKO/RC15 functions as CLKO (FOSC/2))
+//    FCKSM_CSDCMD &       // Clock Switching and Monitor (Clock switching and Fail-Safe Clock Monitor are disabled)
+//    FNOSC_PRIPLL &       // Oscillator Select (Primary Oscillator with PLL module (HSPLL, ECPLL))
+//    IESO_OFF             // Internal External Switch Over Mode (IESO mode (Two-Speed Start-up) disabled)
+//);
+ int CONFIG1 __attribute__((space(prog), address(0x157FE))) = 0x3F7F ;
+//_CONFIG1(
+//    WDTPS_PS32768 &      // Watchdog Timer Postscaler (1:32,768)
+//    FWPSA_PR128 &        // WDT Prescaler (Prescaler ratio of 1:128)
+//    WINDIS_ON &          // Watchdog Timer Window (Standard Watchdog Timer enabled,(Windowed-mode is disabled))
+//    FWDTEN_OFF &         // Watchdog Timer Enable (Watchdog Timer is disabled)
+//    ICS_PGx2 &           // Comm Channel Select (Emulator/debugger uses EMUC2/EMUD2)
+//    GWRP_OFF &           // General Code Segment Write Protect (Writes to program memory are allowed)
+//    GCP_OFF &            // General Code Segment Code Protect (Code protection is disabled)
+//    JTAGEN_OFF           // JTAG Port Enable (JTAG port is disabled)
+//);
 /*-----------------------------------------------------------*/
 
 /*
@@ -144,65 +152,142 @@ static void prvSetupHardware( void );
 within this file. */
 void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName );
 
-
-void my_task(void *p);
 /*-----------------------------------------------------------*/
+//Prototypes
 
-void __attribute__((__interrupt__, auto_psv)) _AddressError(void) // Address error trap
- {
-    INTCON1bits.ADDRERR = 0;
-    asm (".pword 0xDA4000");
-    
- }
+void OutputTask(void *p);
+
+/*-----------------------------------------------------------*/
+//Strucs
+
+struct LEDParam
+{
+	int Green;
+	int Red;
+	int Blue;
+}; 
 
 
+/*------------------------------------------------------------*/
+xQueueHandle Global_Queue_Handle = 0;
 /*
  * Create the demo tasks then start the scheduler.
  */
 int main( void )
 {
 	/* Configure any hardware required for this demo. */
+    _TRISA0=0;
 	prvSetupHardware();
+    
+    Global_Queue_Handle = xQueueCreate(3,sizeof(int));
+    
 
-        xTaskCreate(my_task, (signed char*) "my_task", 1024, NULL, 1, NULL);
-
-        vTaskStartScheduler();
+	/* Create the test tasks defined within this file. */
+	xTaskCreate( OutputTask, (signed char *) "output_task", 1024, NULL, 1, NULL );
+	/* Finally start the scheduler. */
+	vTaskStartScheduler();
 
 	/* Will only reach here if there is insufficient heap available to start
 	the scheduler. */
 	return 0;
 }
 /*-----------------------------------------------------------*/
-
-
-void my_task(void *p)
+void OutputTask(void *p)
 {
-    int i = 0;
-
+ 
+    struct LEDParam LedNum[NumOfLeds];
+	int LedIter;
+	int MaskingIter;
+	LedNum[0].Green = StartVal-125;  //some value for green
+	LedNum[0].Red = StartVal-180;    //some value for red
+	LedNum[0].Blue = StartVal-200;   //some value for blue
+    
+    
     while(1)
     {
-        printf("Hello World %i\n",i);
-        i++;
-        vTaskDelay(10);
-
-        LATAbits.LATA0 = ~LATAbits.LATA0;
+     
+        for (LedIter=0; LedIter < NumOfLeds; LedIter++)
+        {  //begin Led iteration loop
+            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
+            {
+              //begin masking iteration loop for Green
+                if ((0x80 >> MaskingIter) & LedNum[0].Green)  
+				//if statement says: if a 0 is found in temp; produce pulse for a 0,
+				//otherwise produce a pulse for a 1
+                {
+				_LATA0=1;  //use ra0  port = in; lat = out; tris = tristate
+				vTaskDelay (T0H);
+				_LATA0=0;
+				vTaskDelay (T0L);
+                }
+			else
+                {
+				_LATA0=1;
+				vTaskDelay (T1H);
+				_LATA0=0;
+				vTaskDelay (T1L);
+                }
+            }
+            //begin iteration for RED
+            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
+            {
+			//begin masking iteration loop for Red
+                if ((0x80 >> MaskingIter) & LedNum[0].Red)  
+				//if statement says: if a 0 is found in temp; produce pulse for a 0,
+				//otherwise produce a pulse for a 1
+                {
+				_LATA0=1;
+				vTaskDelay (T0H);
+				_LATA0=0;
+				vTaskDelay (T0L);
+                }
+			else
+                {
+				_LATA0=1;
+				vTaskDelay (T1H);
+				_LATA0=0;
+				vTaskDelay (T1L);
+                }
+		}
+		//begin masking iteration for blue
+            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
+            {
+			//begin masking iteration loop for Green
+                if ((0x80 >> MaskingIter) & LedNum[0].Blue)  
+				//if statement says: if a 0 is found in temp; produce pulse for a 0,
+				//otherwise produce a pulse for a 1
+                {
+				_LATA0=1;
+				vTaskDelay (T0H);
+				_LATA0=0;
+				vTaskDelay (T0L);
+                }
+			else
+                {
+				_LATA0=1;
+				vTaskDelay (T1H);
+				_LATA0=0;
+				vTaskDelay (T1L);
+                }
+            }
+        }        
+        
     }
 }
 
+
 static void prvSetupHardware( void )
 {
-	/* The explorer 16 board has LED's on port A.  All bits are set as output
-	so PORTA is read-modified-written directly. */
 	TRISA = 0;
 	PORTA = 0;
 }
-
 /*-----------------------------------------------------------*/
+
 
 void vApplicationIdleHook( void )
 {
 	/* Schedule the co-routines from within the idle task hook. */
-	//vCoRoutineSchedule();
+	
 }
 /*-----------------------------------------------------------*/
 
