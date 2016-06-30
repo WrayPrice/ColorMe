@@ -51,11 +51,6 @@
 #pragma config GCP = OFF                // General Code Segment Code Protect (Code protection is disabled)
 #pragma config JTAGEN = OFF             // JTAG Port Enable (JTAG port is disabled)
 
-
- //Our Prototypes
-int ColorPatternGen(int StartColor);
- 
-
 //FreeRTOS Prototypes
 static void prvSetupHardware( void );
 
@@ -68,6 +63,7 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName );
 
 void TestTask(void *p);
 void OutputTask(void *p);
+int ColorPatternGen(void *p);
 
 /*-----------------------------------------------------------*/
 //Strucs
@@ -152,6 +148,8 @@ int main( void )
 
 	/* Create the test tasks defined within this file. */
 	xTaskCreate( OutputTask, (char *) "output_task", 1024, NULL, 1, NULL );
+	xTaskCreate( ColorPatternGen, (char *) "ColorPatternGen", 1024, NULL, 1, NULL );
+
 	/* Finally start the scheduler. */
 	vTaskStartScheduler();
 
@@ -363,41 +361,46 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 	for( ;; );
 }
 
-int ColorPatternGen(int StartColor)
+int ColorPatternGen(void *p)
 //The purpose of this function is to generate a color pattern for an led strip.
 //This function takes in an integer value from 0 to 2 (0 for green, 1 for red, 2 for blue).
 //The code function uses that integer value as the starting color then goes on to the next numeral color.
 //If the number is 2 then it displays that color then goes back to color 0.
 {
     struct LEDParam LedArray[NumOfLeds];
+    int StartColor = 0;
     int i;
-    
-    for (i=0; i<NumOfLeds; i++)
+    while(1)
     {
-        switch ((StartColor+i)%3)
+        for (i=0; i<NumOfLeds; i++)
         {
-            case 0:
+            switch ((StartColor+i)%3)
             {
-                LedArray[i].Green = 255;
-                LedArray[i].Red = 0;
-                LedArray[i].Blue = 0;
-                break;
+                case 0:
+                {
+                    LedArray[i].Green = 255;
+                    LedArray[i].Red = 0;
+                    LedArray[i].Blue = 0;
+                    break;
+                }
+                case 1:
+                {
+                    LedArray[i].Green = 0;
+                    LedArray[i].Red = 255;
+                    LedArray[i].Blue = 0;
+                    break;
+                 }
+                case 2:
+                {
+                    LedArray[i].Green = 0;
+                    LedArray[i].Red = 0;
+                    LedArray[i].Blue = 255;
+                    break;
+                 }
             }
-            case 1:
-            {
-                LedArray[i].Green = 0;
-                LedArray[i].Red = 255;
-                LedArray[i].Blue = 0;
-                break;
-             }
-            case 2:
-            {
-                LedArray[i].Green = 0;
-                LedArray[i].Red = 0;
-                LedArray[i].Blue = 255;
-                break;
-             }
         }
+        xQueueSend(LED_Output_Queue,(const void *) &LedArray,0);
+        vTaskDelay(1000/portTICK_PERIOD_MS);
     }
     return 0;    
 }
