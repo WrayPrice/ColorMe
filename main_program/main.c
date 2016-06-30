@@ -29,6 +29,8 @@
 #define MYSPI _LATA0 // represents the pin chosen for the SPI bus (SDO1)
 #define IOMYSPI _TRISA0 //represents the I/0 register for the spi bus-neede to set pin as an output by writing a 0
 
+//LED parameters
+#define NumOfLeds 1  //done for simplicity
 
 #include <xc.h>
 
@@ -76,7 +78,7 @@ struct LEDParam
 
 
 /*------------------------------------------------------------*/
-xQueueHandle Global_Queue_Handle = 0;
+xQueueHandle LED_Output_Queue = 0;
 /*
  * Create the demo tasks then start the scheduler.
  */
@@ -137,16 +139,16 @@ int main( void )
      
 	/*************************END SPI Bus config*********************************************/
     
-    /* Configure any hardware required for this demo. */
-    IOMYSPI=0;
+        /* Configure any hardware required for this demo. */
+        IOMYSPI=0;
 	//prvSetupHardware();
 
     
-    //Global_Queue_Handle = xQueueCreate(3,sizeof(int));
-    
+        //Global_Queue_Handle = xQueueCreate(3,sizeof(int));
+        LED_Output_Queue =  xQueueCreate( 1,sizeof(struct LEDParam[NumOfLeds]));
 
 	/* Create the test tasks defined within this file. */
-	xTaskCreate( TestTask, (signed char *) "output_task", 1024, NULL, 1, NULL );
+	xTaskCreate( OutputTask, (char *) "output_task", 1024, NULL, 1, NULL );
 	/* Finally start the scheduler. */
 	vTaskStartScheduler();
 
@@ -233,93 +235,101 @@ void TestTask(void *p)
 
 void OutputTask(void *p)
 {
- 
-    #include <stdio.h>
-
-#define NumOfLeds 1  //done for simplicity
-#define reset 80     //time for reset
-
-typedef struct
-{
-	//int green;
-	//int red;
-	//int blue;
-	int color[3]; //green, red, blue
-}Lednum;
-
-
-int main ()
-{
-	Lednum lednum[NumOfLeds]={0};
+    struct LEDParam LED_Out[NumOfLeds];
     int BitEnc=0;
-	int LedIter, ColorIter, BitIter;
-	int counter=0;
-	//
-	lednum[0].color[0]=200; //green
-	lednum[0].color[1]=1; //red
-	lednum[0].color[2]=2; //blue
-	for(LedIter=0;LedIter<NumOfLeds;LedIter++)
-	{
-		for (ColorIter=0;ColorIter<3;ColorIter++)
-		{
-			 for (BitIter=0;BitIter<4;BitIter++)
-			 {
-				 BitEnc = lednum[LedIter].color[ColorIter] >> (6-2*BitIter) & 0x03;
-				 printf("BitEnc is: %d\n",BitEnc);
-				 counter++;
-				 switch (BitEnc)
-				 {
-					 case 0:
-						 printf("Outut 10001000\n");
-						 break;
-					 case 1:
-						 printf("Outut 10001100\n");
-						 break;
-					 case 2:
-						 printf("Outut 11001000\n");
-						 break;
-					 case 3:
-						 printf("Outut 11001100\n");
-						 break;
-				 }
-			}
-		}
-	}
-	printf("\nCounter is: %d\n", counter);
-	return 0;
-}
+    int LedIter, ColorIter, BitIter,i;
+    int ColorVal;
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    vTaskDelete(NULL);
+    while(1)
+    {
+         xQueueReceive(LED_Output_Queue,&LED_Out,portMAX_DELAY);
+
+        //reset signal
+        for (i=0;i<36;i++)
+        {
+            while(SPI1STATbits.SPITBF == 1);
+            SPI1BUF=0x00;
+        }
+
+        for(LedIter=0;LedIter<NumOfLeds;LedIter++)
+        {
+            for(ColorIter=0;ColorIter<3;ColorIter++)
+            {
+                switch (ColorIter)
+                {
+                    case 0:
+                    {
+                        ColorVal = LED_Out[LedIter].Red;
+                    }
+                    case 1:
+                    {
+                        ColorVal = LED_Out[LedIter].Green;
+                    }
+                    case 2:
+                    {
+                        ColorVal = LED_Out[LedIter].Blue;
+                    }
+                }
+
+                 for (BitIter=0;BitIter<4;BitIter++)
+                 {
+                     BitEnc = ColorVal >> (6-2*BitIter) & 0x03;
+                     printf("BitEnc is: %d\n",BitEnc);
+                     switch (BitEnc)
+                     {
+                         case 0:
+                         {
+                             printf("Outut 10001000\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0x88;
+
+                             break;
+                         }
+                         case 1:
+                         {
+                             printf("Outut 10001100\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0x8C;
+
+                             break;
+                         }
+                         case 2:
+                         {
+                             printf("Outut 11001000\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0xC8;
+
+                             break;
+                         }
+                         case 3:
+                         {
+                             printf("Outut 11001100\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0xCC;
+
+                             break;
+                         }
+                     }
+                }
+            }
+        }
+    }
 }
 
 
