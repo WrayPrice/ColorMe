@@ -234,108 +234,91 @@ void TestTask(void *p)
 void OutputTask(void *p)
 {
  
-    struct LEDParam LedNum[NumOfLeds];
-	int LedIter;
-	int MaskingIter;
-    
-	//LedNum[0].Green = 0;  //some value for green
-	//LedNum[0].Red = 0;    //some value for red
-	//LedNum[0].Blue = StartVal;   //some value for blue
-    
-    
-    
-    
-       
-    
-    while(1)
-    {
-     
-        for (LedIter=0; LedIter < NumOfLeds; LedIter++)
-        {  //begin Led iteration loop
-            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
-            {
-              //begin masking iteration loop for Green
-                if ((0x80 >> MaskingIter) & LedNum[0].Green)  
-				//if statement says: if a 0 is found in temp; produce pulse for a 0,
-				//otherwise produce a pulse for a 1
-                {
-                    SPI1BUF=1000;
-                    //this will become spi code 1000
-                    /*
-				MYSPI=1;  //use ra0  port = in; lat = out; tris = tristate
-				vTaskDelay (T0H);
-				MYSPI=0;
-				vTaskDelay (T0L);
-                     */
-                }
-			else
-                {
-                    //this will become spi code 1100
-                    /*
-				MYSPI=1;
-				vTaskDelay (T1H);
-				MYSPI=0;
-				vTaskDelay (T1L);
-                     */
-                }
-            }
-            //begin iteration for RED
-            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
-            {
-			//begin masking iteration loop for Red
-                if ((0x80 >> MaskingIter) & LedNum[0].Red)  
-				//if statement says: if a 0 is found in temp; produce pulse for a 0,
-				//otherwise produce a pulse for a 1
-                {
-				//this will become spi code 1000
-                    /*
-				MYSPI=1;  //use ra0  port = in; lat = out; tris = tristate
-				vTaskDelay (T0H);
-				MYSPI=0;
-				vTaskDelay (T0L);
-                     */
-                }
-			else
-                {
-                    //this will become spi code 1100
-                    /*
-				MYSPI=1;
-				vTaskDelay (T1H);
-				MYSPI=0;
-				vTaskDelay (T1L);
-                     */
-                }
+    #include <stdio.h>
+
+#define NumOfLeds 1  //done for simplicity
+#define reset 80     //time for reset
+
+typedef struct
+{
+	//int green;
+	//int red;
+	//int blue;
+	int color[3]; //green, red, blue
+}Lednum;
+
+
+int main ()
+{
+	Lednum lednum[NumOfLeds]={0};
+    int BitEnc=0;
+	int LedIter, ColorIter, BitIter;
+	int counter=0;
+	//
+	lednum[0].color[0]=200; //green
+	lednum[0].color[1]=1; //red
+	lednum[0].color[2]=2; //blue
+	for(LedIter=0;LedIter<NumOfLeds;LedIter++)
+	{
+		for (ColorIter=0;ColorIter<3;ColorIter++)
+		{
+			 for (BitIter=0;BitIter<4;BitIter++)
+			 {
+				 BitEnc = lednum[LedIter].color[ColorIter] >> (6-2*BitIter) & 0x03;
+				 printf("BitEnc is: %d\n",BitEnc);
+				 counter++;
+				 switch (BitEnc)
+				 {
+					 case 0:
+						 printf("Outut 10001000\n");
+						 break;
+					 case 1:
+						 printf("Outut 10001100\n");
+						 break;
+					 case 2:
+						 printf("Outut 11001000\n");
+						 break;
+					 case 3:
+						 printf("Outut 11001100\n");
+						 break;
+				 }
+			}
 		}
-		//begin masking iteration for blue
-            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
-            {
-			//begin masking iteration loop for Green
-                if ((0x80 >> MaskingIter) & LedNum[0].Blue)  
-				//if statement says: if a 0 is found in temp; produce pulse for a 0,
-				//otherwise produce a pulse for a 1
-                {
-				//this will become spi code 1000
-                    /*
-				MYSPI=1;  //use ra0  port = in; lat = out; tris = tristate
-				vTaskDelay (T0H);
-				MYSPI=0;
-				vTaskDelay (T0L);
-                     */
-                }
-			else
-                {
-                    //this will become spi code 1100
-                    /*
-				MYSPI=1;
-				vTaskDelay (T1H);
-				MYSPI=0;
-				vTaskDelay (T1L);
-                     */
-                }
-            }
-        }        
-        
-    }
+	}
+	printf("\nCounter is: %d\n", counter);
+	return 0;
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     vTaskDelete(NULL);
 }
 

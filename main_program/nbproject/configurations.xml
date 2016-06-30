@@ -32,10 +32,10 @@
       <itemPath>list.c</itemPath>
       <itemPath>port.c</itemPath>
       <itemPath>portasm_PIC24.S</itemPath>
-      <itemPath>heap_5.c</itemPath>
       <itemPath>croutine.c</itemPath>
       <itemPath>event_groups.c</itemPath>
       <itemPath>timers.c</itemPath>
+      <itemPath>heap_1.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -228,6 +228,7 @@
         <property key="ToolFirmwareOption.UseLatestFirmware" value="true"/>
         <property key="UART 1" value="true"/>
         <property key="UART 2" value="true"/>
+        <property key="firmware.download.all" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
