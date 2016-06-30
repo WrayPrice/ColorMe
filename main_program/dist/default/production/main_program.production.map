@@ -68,10 +68,10 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xb4           0x10e  (270)
 .const                       0x2b4                0x34            0x4e  (78)
-.text                        0x2e8              0x26c4          0x3a26  (14886)
-.dinit                      0x29ac                0x22            0x33  (51)
+.text                        0x2e8              0x277a          0x3b37  (15159)
+.dinit                      0x2a62                0x22            0x33  (51)
 
-                     Total program memory used (bytes):         0x3bb5  (15285) 11%
+                     Total program memory used (bytes):         0x3cc6  (15558) 11%
 
 
 Data Memory  [Origin = 0x800, Length = 0x2000]
@@ -112,8 +112,8 @@ External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
                   0x00022c                  __psv_init
-                  0x00023c                  __data_init_standard
                   0x00023c                  __data_init
+                  0x00023c                  __data_init_standard
                   0x0002a2                  __DefaultInterrupt
                   0x0002a6                  _memcpy
                   0x0002e8                  _xTaskGenericCreate
@@ -174,71 +174,73 @@ External Symbols in Program Memory (by address):
                   0x001db2                  _vEventGroupDelete
                   0x001dde                  _vEventGroupSetBitsCallback
                   0x001df2                  _vEventGroupClearBitsCallback
-                  0x001e40                  _xCoRoutineCreate
-                  0x001ee0                  _vCoRoutineAddToDelayedList
-                  0x002072                  _vCoRoutineSchedule
-                  0x002118                  _xCoRoutineRemoveFromEventList
-                  0x002154                  _pvPortMalloc
-                  0x002234                  _vPortFree
-                  0x002284                  _xPortGetFreeHeapSize
-                  0x00228e                  _xPortGetMinimumEverFreeHeapSize
-                  0x002330                  _vPortDefineHeapRegions
-                  0x00240a                  _main
-                  0x002494                  _TestTask
-                  0x00262e                  _OutputTask
-                  0x002698                  _vApplicationIdleHook
-                  0x00269e                  _vApplicationStackOverflowHook
-                  0x0026be                  _pxPortInitialiseStack
-                  0x002752                  _xPortStartScheduler
-                  0x002782                  _vPortEndScheduler
-                  0x0027b4                  _vPortEnterCritical
-                  0x0027d8                  _vPortExitCritical
-                  0x002800                  __T1Interrupt
-                  0x002832                  _vListInitialise
-                  0x002864                  _vListInitialiseItem
-                  0x002872                  _vListInsertEnd
-                  0x0028ae                  _vListInsert
-                  0x002912                  _uxListRemove
-                  0x00295c                  _vPortYield
+                  0x001e40                  _main
+                  0x001eca                  _TestTask
+                  0x002064                  _OutputTask
+                  0x0020ce                  _vApplicationIdleHook
+                  0x0020d4                  _vApplicationStackOverflowHook
+                  0x0020f4                  _ColorPatternGen
+                  0x0021aa                  _xCoRoutineCreate
+                  0x00224a                  _vCoRoutineAddToDelayedList
+                  0x0023dc                  _vCoRoutineSchedule
+                  0x002482                  _xCoRoutineRemoveFromEventList
+                  0x0024be                  _pvPortMalloc
+                  0x00259e                  _vPortFree
+                  0x0025ee                  _xPortGetFreeHeapSize
+                  0x0025f8                  _xPortGetMinimumEverFreeHeapSize
+                  0x00269a                  _vPortDefineHeapRegions
+                  0x002774                  _pxPortInitialiseStack
+                  0x002808                  _xPortStartScheduler
+                  0x002838                  _vPortEndScheduler
+                  0x00286a                  _vPortEnterCritical
+                  0x00288e                  _vPortExitCritical
+                  0x0028b6                  __T1Interrupt
+                  0x0028e8                  _vListInitialise
+                  0x00291a                  _vListInitialiseItem
+                  0x002928                  _vListInsertEnd
+                  0x002964                  _vListInsert
+                  0x0029c8                  _uxListRemove
+                  0x002a12                  _vPortYield
 
 External Symbols in Program Memory (by name):
 
-                  0x00262e                  _OutputTask
-                  0x002494                  _TestTask
+                  0x0020f4                  _ColorPatternGen
+                  0x002064                  _OutputTask
+                  0x001eca                  _TestTask
                   0x0002a2                  __DefaultInterrupt
-                  0x002800                  __T1Interrupt
+                  0x0028b6                  __T1Interrupt
                   0x00023c                  __data_init
                   0x00023c                  __data_init_standard
                   0x00022c                  __psv_init
                   0x000200                  __resetPRI
-                  0x00240a                  _main
+                  0x001e40                  _main
                   0x0002a6                  _memcpy
-                  0x002154                  _pvPortMalloc
-                  0x0026be                  _pxPortInitialiseStack
+                  0x0024be                  _pvPortMalloc
+                  0x002774                  _pxPortInitialiseStack
                   0x000ce2                  _ulTaskNotifyTake
-                  0x002912                  _uxListRemove
+                  0x0029c8                  _uxListRemove
                   0x001590                  _uxQueueMessagesWaiting
                   0x0015c6                  _uxQueueMessagesWaitingFromISR
                   0x0015a6                  _uxQueueSpacesAvailable
                   0x000814                  _uxTaskGetNumberOfTasks
                   0x000cc8                  _uxTaskResetEventItemValue
-                  0x002698                  _vApplicationIdleHook
-                  0x00269e                  _vApplicationStackOverflowHook
-                  0x001ee0                  _vCoRoutineAddToDelayedList
-                  0x002072                  _vCoRoutineSchedule
+                  0x0020ce                  _vApplicationIdleHook
+                  0x0020d4                  _vApplicationStackOverflowHook
+                  0x00224a                  _vCoRoutineAddToDelayedList
+                  0x0023dc                  _vCoRoutineSchedule
                   0x001df2                  _vEventGroupClearBitsCallback
                   0x001db2                  _vEventGroupDelete
                   0x001dde                  _vEventGroupSetBitsCallback
-                  0x002832                  _vListInitialise
-                  0x002864                  _vListInitialiseItem
-                  0x0028ae                  _vListInsert
-                  0x002872                  _vListInsertEnd
-                  0x002330                  _vPortDefineHeapRegions
-                  0x002782                  _vPortEndScheduler
-                  0x0027b4                  _vPortEnterCritical
-                  0x0027d8                  _vPortExitCritical
-                  0x002234                  _vPortFree
-                  0x00295c                  _vPortYield
+                  0x0028e8                  _vListInitialise
+                  0x00291a                  _vListInitialiseItem
+                  0x002964                  _vListInsert
+                  0x002928                  _vListInsertEnd
+                  0x00269a                  _vPortDefineHeapRegions
+                  0x002838                  _vPortEndScheduler
+                  0x00286a                  _vPortEnterCritical
+                  0x00288e                  _vPortExitCritical
+                  0x00259e                  _vPortFree
+                  0x002a12                  _vPortYield
                   0x0015d8                  _vQueueDelete
                   0x000454                  _vTaskDelay
                   0x0003d4                  _vTaskDelayUntil
@@ -254,17 +256,17 @@ External Symbols in Program Memory (by name):
                   0x00055a                  _vTaskSuspend
                   0x00073c                  _vTaskSuspendAll
                   0x000904                  _vTaskSwitchContext
-                  0x001e40                  _xCoRoutineCreate
-                  0x002118                  _xCoRoutineRemoveFromEventList
+                  0x0021aa                  _xCoRoutineCreate
+                  0x002482                  _xCoRoutineRemoveFromEventList
                   0x001ca0                  _xEventGroupClearBits
                   0x001acc                  _xEventGroupCreate
                   0x001cca                  _xEventGroupGetBitsFromISR
                   0x001ce4                  _xEventGroupSetBits
                   0x001af0                  _xEventGroupSync
                   0x001bb2                  _xEventGroupWaitBits
-                  0x002284                  _xPortGetFreeHeapSize
-                  0x00228e                  _xPortGetMinimumEverFreeHeapSize
-                  0x002752                  _xPortStartScheduler
+                  0x0025ee                  _xPortGetFreeHeapSize
+                  0x0025f8                  _xPortGetMinimumEverFreeHeapSize
+                  0x002808                  _xPortStartScheduler
                   0x0018da                  _xQueueCRReceive
                   0x001a46                  _xQueueCRReceiveFromISR
                   0x0017e4                  _xQueueCRSend
@@ -371,56 +373,56 @@ __CONFIG1
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x6387
+.debug_info       0x000000       0x63e7
  *(.debug_info)
- .debug_info      0x000000        0xf73 build/default/production/main.o
- .debug_info      0x000f73       0x18d5 build/default/production/tasks.o
- .debug_info      0x002848       0x1167 build/default/production/queue.o
- .debug_info      0x0039af        0x43e build/default/production/list.o
- .debug_info      0x003ded        0xb53 build/default/production/port.o
- .debug_info      0x004940         0x98 build/default/production/portasm_PIC24.o
- .debug_info      0x0049d8        0x5d0 build/default/production/heap_5.o
- .debug_info      0x004fa8        0x9ac build/default/production/croutine.o
- .debug_info      0x005954        0x8e7 build/default/production/event_groups.o
- .debug_info      0x00623b        0x14c build/default/production/timers.o
+ .debug_info      0x000000        0xfd3 build/default/production/main.o
+ .debug_info      0x000fd3       0x18d5 build/default/production/tasks.o
+ .debug_info      0x0028a8       0x1167 build/default/production/queue.o
+ .debug_info      0x003a0f        0x43e build/default/production/list.o
+ .debug_info      0x003e4d        0xb53 build/default/production/port.o
+ .debug_info      0x0049a0         0x98 build/default/production/portasm_PIC24.o
+ .debug_info      0x004a38        0x5d0 build/default/production/heap_5.o
+ .debug_info      0x005008        0x9ac build/default/production/croutine.o
+ .debug_info      0x0059b4        0x8e7 build/default/production/event_groups.o
+ .debug_info      0x00629b        0x14c build/default/production/timers.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0xcec
+.debug_abbrev     0x000000        0xd05
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x204 build/default/production/main.o
- .debug_abbrev    0x000204        0x210 build/default/production/tasks.o
- .debug_abbrev    0x000414        0x185 build/default/production/queue.o
- .debug_abbrev    0x000599         0xda build/default/production/list.o
- .debug_abbrev    0x000673        0x1fb build/default/production/port.o
- .debug_abbrev    0x00086e         0x14 build/default/production/portasm_PIC24.o
- .debug_abbrev    0x000882         0xf9 build/default/production/heap_5.o
- .debug_abbrev    0x00097b        0x212 build/default/production/croutine.o
- .debug_abbrev    0x000b8d        0x140 build/default/production/event_groups.o
- .debug_abbrev    0x000ccd         0x1f build/default/production/timers.o
+ .debug_abbrev    0x000000        0x21d build/default/production/main.o
+ .debug_abbrev    0x00021d        0x210 build/default/production/tasks.o
+ .debug_abbrev    0x00042d        0x185 build/default/production/queue.o
+ .debug_abbrev    0x0005b2         0xda build/default/production/list.o
+ .debug_abbrev    0x00068c        0x1fb build/default/production/port.o
+ .debug_abbrev    0x000887         0x14 build/default/production/portasm_PIC24.o
+ .debug_abbrev    0x00089b         0xf9 build/default/production/heap_5.o
+ .debug_abbrev    0x000994        0x212 build/default/production/croutine.o
+ .debug_abbrev    0x000ba6        0x140 build/default/production/event_groups.o
+ .debug_abbrev    0x000ce6         0x1f build/default/production/timers.o
 
-.debug_line       0x000000       0x3789
+.debug_line       0x000000       0x3828
  *(.debug_line)
- .debug_line      0x000000        0x473 build/default/production/main.o
- .debug_line      0x000473       0x125e build/default/production/tasks.o
- .debug_line      0x0016d1        0xcef build/default/production/queue.o
- .debug_line      0x0023c0        0x20f build/default/production/list.o
- .debug_line      0x0025cf        0x317 build/default/production/port.o
- .debug_line      0x0028e6         0x63 build/default/production/portasm_PIC24.o
- .debug_line      0x002949        0x425 build/default/production/heap_5.o
- .debug_line      0x002d6e        0x462 build/default/production/croutine.o
- .debug_line      0x0031d0        0x595 build/default/production/event_groups.o
- .debug_line      0x003765         0x24 build/default/production/timers.o
+ .debug_line      0x000000        0x512 build/default/production/main.o
+ .debug_line      0x000512       0x125e build/default/production/tasks.o
+ .debug_line      0x001770        0xcef build/default/production/queue.o
+ .debug_line      0x00245f        0x20f build/default/production/list.o
+ .debug_line      0x00266e        0x317 build/default/production/port.o
+ .debug_line      0x002985         0x63 build/default/production/portasm_PIC24.o
+ .debug_line      0x0029e8        0x425 build/default/production/heap_5.o
+ .debug_line      0x002e0d        0x462 build/default/production/croutine.o
+ .debug_line      0x00326f        0x595 build/default/production/event_groups.o
+ .debug_line      0x003804         0x24 build/default/production/timers.o
 
-.debug_frame      0x000000        0x700
+.debug_frame      0x000000        0x710
  *(.debug_frame)
- .debug_frame     0x000000         0x74 build/default/production/main.o
- .debug_frame     0x000074        0x274 build/default/production/tasks.o
- .debug_frame     0x0002e8        0x184 build/default/production/queue.o
- .debug_frame     0x00046c         0x64 build/default/production/list.o
- .debug_frame     0x0004d0         0x84 build/default/production/port.o
- .debug_frame     0x000554         0x74 build/default/production/heap_5.o
- .debug_frame     0x0005c8         0x84 build/default/production/croutine.o
- .debug_frame     0x00064c         0xb4 build/default/production/event_groups.o
+ .debug_frame     0x000000         0x84 build/default/production/main.o
+ .debug_frame     0x000084        0x274 build/default/production/tasks.o
+ .debug_frame     0x0002f8        0x184 build/default/production/queue.o
+ .debug_frame     0x00047c         0x64 build/default/production/list.o
+ .debug_frame     0x0004e0         0x84 build/default/production/port.o
+ .debug_frame     0x000564         0x74 build/default/production/heap_5.o
+ .debug_frame     0x0005d8         0x84 build/default/production/croutine.o
+ .debug_frame     0x00065c         0xb4 build/default/production/event_groups.o
 
 .debug_str        0x000000        0x45c
  *(.debug_str)
@@ -439,24 +441,24 @@ __CONFIG1
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x8aa
+                  0x000000        0x8be
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x8a build/default/production/main.o
+                  0x000000         0x9e build/default/production/main.o
  .debug_pubnames
-                  0x00008a        0x2f3 build/default/production/tasks.o
+                  0x00009e        0x2f3 build/default/production/tasks.o
  .debug_pubnames
-                  0x00037d        0x1ce build/default/production/queue.o
+                  0x000391        0x1ce build/default/production/queue.o
  .debug_pubnames
-                  0x00054b         0x72 build/default/production/list.o
+                  0x00055f         0x72 build/default/production/list.o
  .debug_pubnames
-                  0x0005bd         0xd6 build/default/production/port.o
+                  0x0005d1         0xd6 build/default/production/port.o
  .debug_pubnames
-                  0x000693         0x89 build/default/production/heap_5.o
+                  0x0006a7         0x89 build/default/production/heap_5.o
  .debug_pubnames
-                  0x00071c         0x96 build/default/production/croutine.o
+                  0x000730         0x96 build/default/production/croutine.o
  .debug_pubnames
-                  0x0007b2         0xf8 build/default/production/event_groups.o
+                  0x0007c6         0xf8 build/default/production/event_groups.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -494,7 +496,7 @@ __CONFIG1
                   0x000014          0x4 LONG 0x2a2 DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000016          0x4 LONG 0x2a2 DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000018          0x4 LONG 0x2a2 DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00001a          0x4 LONG 0x2800 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00001a          0x4 LONG 0x28b6 DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00001c          0x4 LONG 0x2a2 DEFINED (__Interrupt4)?ABSOLUTE (__Interrupt4):ABSOLUTE (__DefaultInterrupt)
                   0x00001e          0x4 LONG 0x2a2 DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000020          0x4 LONG 0x2a2 DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -622,7 +624,7 @@ __CONFIG1
                   0x000114          0x4 LONG 0x2a2 DEFINED (__AltINT0Interrupt)?ABSOLUTE (__AltINT0Interrupt):DEFINED (__INT0Interrupt)?ABSOLUTE (__INT0Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000116          0x4 LONG 0x2a2 DEFINED (__AltIC1Interrupt)?ABSOLUTE (__AltIC1Interrupt):DEFINED (__IC1Interrupt)?ABSOLUTE (__IC1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000118          0x4 LONG 0x2a2 DEFINED (__AltOC1Interrupt)?ABSOLUTE (__AltOC1Interrupt):DEFINED (__OC1Interrupt)?ABSOLUTE (__OC1Interrupt):ABSOLUTE (__DefaultInterrupt)
-                  0x00011a          0x4 LONG 0x2800 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
+                  0x00011a          0x4 LONG 0x28b6 DEFINED (__AltT1Interrupt)?ABSOLUTE (__AltT1Interrupt):DEFINED (__T1Interrupt)?ABSOLUTE (__T1Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x00011c          0x4 LONG 0x2a2 DEFINED (__AltInterrupt4)?ABSOLUTE (__AltInterrupt4):DEFINED (__Interrupt4)?ABSOLUTE (__Interrupt4):ABSOLUTE (__DefaultInterrupt)
                   0x00011e          0x4 LONG 0x2a2 DEFINED (__AltIC2Interrupt)?ABSOLUTE (__AltIC2Interrupt):DEFINED (__IC2Interrupt)?ABSOLUTE (__IC2Interrupt):ABSOLUTE (__DefaultInterrupt)
                   0x000120          0x4 LONG 0x2a2 DEFINED (__AltOC2Interrupt)?ABSOLUTE (__AltOC2Interrupt):DEFINED (__OC2Interrupt)?ABSOLUTE (__OC2Interrupt):ABSOLUTE (__DefaultInterrupt)
@@ -1393,7 +1395,7 @@ __c30_signature
  .const             0x82e0          0x6 build/default/production/tasks.o
  .const             0x82e6          0x2 build/default/production/heap_5.o
 
-.text             0x0002e8       0x26c4
+.text             0x0002e8       0x277a
  .text            0x0002e8        0xe1a build/default/production/tasks.o
                   0x0002e8                  _xTaskGenericCreate
                   0x0003d4                  _vTaskDelayUntil
@@ -1455,39 +1457,40 @@ __c30_signature
                   0x001db2                  _vEventGroupDelete
                   0x001dde                  _vEventGroupSetBitsCallback
                   0x001df2                  _vEventGroupClearBitsCallback
- .text            0x001e40        0x314 build/default/production/croutine.o
-                  0x001e40                  _xCoRoutineCreate
-                  0x001ee0                  _vCoRoutineAddToDelayedList
-                  0x002072                  _vCoRoutineSchedule
-                  0x002118                  _xCoRoutineRemoveFromEventList
- .text            0x002154        0x2b6 build/default/production/heap_5.o
-                  0x002154                  _pvPortMalloc
-                  0x002234                  _vPortFree
-                  0x002284                  _xPortGetFreeHeapSize
-                  0x00228e                  _xPortGetMinimumEverFreeHeapSize
-                  0x002330                  _vPortDefineHeapRegions
- .text            0x00240a        0x2b4 build/default/production/main.o
-                  0x00240a                  _main
-                  0x002494                  _TestTask
-                  0x00262e                  _OutputTask
-                  0x002698                  _vApplicationIdleHook
-                  0x00269e                  _vApplicationStackOverflowHook
- .text            0x0026be        0x174 build/default/production/port.o
-                  0x0026be                  _pxPortInitialiseStack
-                  0x002752                  _xPortStartScheduler
-                  0x002782                  _vPortEndScheduler
-                  0x002788                  _vApplicationSetupTickTimerInterrupt
-                  0x0027b4                  _vPortEnterCritical
-                  0x0027d8                  _vPortExitCritical
-                  0x002800                  __T1Interrupt
- .text            0x002832        0x12a build/default/production/list.o
-                  0x002832                  _vListInitialise
-                  0x002864                  _vListInitialiseItem
-                  0x002872                  _vListInsertEnd
-                  0x0028ae                  _vListInsert
-                  0x002912                  _uxListRemove
- .text            0x00295c         0x50 build/default/production/portasm_PIC24.o
-                  0x00295c                  _vPortYield
+ .text            0x001e40        0x36a build/default/production/main.o
+                  0x001e40                  _main
+                  0x001eca                  _TestTask
+                  0x002064                  _OutputTask
+                  0x0020ce                  _vApplicationIdleHook
+                  0x0020d4                  _vApplicationStackOverflowHook
+                  0x0020f4                  _ColorPatternGen
+ .text            0x0021aa        0x314 build/default/production/croutine.o
+                  0x0021aa                  _xCoRoutineCreate
+                  0x00224a                  _vCoRoutineAddToDelayedList
+                  0x0023dc                  _vCoRoutineSchedule
+                  0x002482                  _xCoRoutineRemoveFromEventList
+ .text            0x0024be        0x2b6 build/default/production/heap_5.o
+                  0x0024be                  _pvPortMalloc
+                  0x00259e                  _vPortFree
+                  0x0025ee                  _xPortGetFreeHeapSize
+                  0x0025f8                  _xPortGetMinimumEverFreeHeapSize
+                  0x00269a                  _vPortDefineHeapRegions
+ .text            0x002774        0x174 build/default/production/port.o
+                  0x002774                  _pxPortInitialiseStack
+                  0x002808                  _xPortStartScheduler
+                  0x002838                  _vPortEndScheduler
+                  0x00283e                  _vApplicationSetupTickTimerInterrupt
+                  0x00286a                  _vPortEnterCritical
+                  0x00288e                  _vPortExitCritical
+                  0x0028b6                  __T1Interrupt
+ .text            0x0028e8        0x12a build/default/production/list.o
+                  0x0028e8                  _vListInitialise
+                  0x00291a                  _vListInitialiseItem
+                  0x002928                  _vListInsertEnd
+                  0x002964                  _vListInsert
+                  0x0029c8                  _uxListRemove
+ .text            0x002a12         0x50 build/default/production/portasm_PIC24.o
+                  0x002a12                  _vPortYield
 
-.dinit            0x0029ac         0x22
- .dinit           0x0029ac         0x22 data_init
+.dinit            0x002a62         0x22
+ .dinit           0x002a62         0x22 data_init

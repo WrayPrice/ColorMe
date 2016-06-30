@@ -50,8 +50,11 @@
 #pragma config JTAGEN = OFF             // JTAG Port Enable (JTAG port is disabled)
 
 
+ //Our Prototypes
+int ColorPatternGen(int StartColor);
  
- 
+
+//FreeRTOS Prototypes
 static void prvSetupHardware( void );
 
 /* Prototypes for the standard FreeRTOS callback/hook functions implemented
@@ -367,3 +370,41 @@ void vApplicationStackOverflowHook( TaskHandle_t pxTask, char *pcTaskName )
 	for( ;; );
 }
 
+int ColorPatternGen(int StartColor)
+//The purpose of this function is to generate a color pattern for an led strip.
+//This function takes in an integer value from 0 to 2 (0 for green, 1 for red, 2 for blue).
+//The code function uses that integer value as the starting color then goes on to the next numeral color.
+//If the number is 2 then it displays that color then goes back to color 0.
+{
+    struct LEDParam LedArray[NumOfLeds];
+    int i;
+    
+    for (i=0; i<NumOfLeds; i++)
+    {
+        switch ((StartColor+i)%3)
+        {
+            case 0:
+            {
+                LedArray[i].Green = 255;
+                LedArray[i].Red = 0;
+                LedArray[i].Blue = 0;
+                break;
+            }
+            case 1:
+            {
+                LedArray[i].Green = 0;
+                LedArray[i].Red = 255;
+                LedArray[i].Blue = 0;
+                break;
+             }
+            case 2:
+            {
+                LedArray[i].Green = 0;
+                LedArray[i].Red = 0;
+                LedArray[i].Blue = 255;
+                break;
+             }
+        }
+    }
+    return 0;    
+}
