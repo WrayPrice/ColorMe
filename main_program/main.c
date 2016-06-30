@@ -29,6 +29,8 @@
 #define MYSPI _LATA0 // represents the pin chosen for the SPI bus (SDO1)
 #define IOMYSPI _TRISA0 //represents the I/0 register for the spi bus-neede to set pin as an output by writing a 0
 
+//LED parameters
+#define NumOfLeds 1  //done for simplicity
 
 #include <xc.h>
 
@@ -79,7 +81,7 @@ struct LEDParam
 
 
 /*------------------------------------------------------------*/
-xQueueHandle Global_Queue_Handle = 0;
+xQueueHandle LED_Output_Queue = 0;
 /*
  * Create the demo tasks then start the scheduler.
  */
@@ -140,16 +142,16 @@ int main( void )
      
 	/*************************END SPI Bus config*********************************************/
     
-    /* Configure any hardware required for this demo. */
-    IOMYSPI=0;
+        /* Configure any hardware required for this demo. */
+        IOMYSPI=0;
 	//prvSetupHardware();
 
     
-    //Global_Queue_Handle = xQueueCreate(3,sizeof(int));
-    
+        //Global_Queue_Handle = xQueueCreate(3,sizeof(int));
+        LED_Output_Queue =  xQueueCreate( 1,sizeof(struct LEDParam[NumOfLeds]));
 
 	/* Create the test tasks defined within this file. */
-	xTaskCreate( TestTask, (signed char *) "output_task", 1024, NULL, 1, NULL );
+	xTaskCreate( OutputTask, (char *) "output_task", 1024, NULL, 1, NULL );
 	/* Finally start the scheduler. */
 	vTaskStartScheduler();
 
@@ -236,110 +238,101 @@ void TestTask(void *p)
 
 void OutputTask(void *p)
 {
- 
-    struct LEDParam LedNum[NumOfLeds];
-	int LedIter;
-	int MaskingIter;
-    
-	//LedNum[0].Green = 0;  //some value for green
-	//LedNum[0].Red = 0;    //some value for red
-	//LedNum[0].Blue = StartVal;   //some value for blue
-    
-    
-    
-    
-       
-    
+    struct LEDParam LED_Out[NumOfLeds];
+    int BitEnc=0;
+    int LedIter, ColorIter, BitIter,i;
+    int ColorVal;
+
     while(1)
     {
-     
-        for (LedIter=0; LedIter < NumOfLeds; LedIter++)
-        {  //begin Led iteration loop
-            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
+         xQueueReceive(LED_Output_Queue,&LED_Out,portMAX_DELAY);
+
+        //reset signal
+        for (i=0;i<36;i++)
+        {
+            while(SPI1STATbits.SPITBF == 1);
+            SPI1BUF=0x00;
+        }
+
+        for(LedIter=0;LedIter<NumOfLeds;LedIter++)
+        {
+            for(ColorIter=0;ColorIter<3;ColorIter++)
             {
-              //begin masking iteration loop for Green
-                if ((0x80 >> MaskingIter) & LedNum[0].Green)  
-				//if statement says: if a 0 is found in temp; produce pulse for a 0,
-				//otherwise produce a pulse for a 1
+                switch (ColorIter)
                 {
-                    SPI1BUF=1000;
-                    //this will become spi code 1000
-                    /*
-				MYSPI=1;  //use ra0  port = in; lat = out; tris = tristate
-				vTaskDelay (T0H);
-				MYSPI=0;
-				vTaskDelay (T0L);
-                     */
+                    case 0:
+                    {
+                        ColorVal = LED_Out[LedIter].Red;
+                    }
+                    case 1:
+                    {
+                        ColorVal = LED_Out[LedIter].Green;
+                    }
+                    case 2:
+                    {
+                        ColorVal = LED_Out[LedIter].Blue;
+                    }
                 }
-			else
-                {
-                    //this will become spi code 1100
-                    /*
-				MYSPI=1;
-				vTaskDelay (T1H);
-				MYSPI=0;
-				vTaskDelay (T1L);
-                     */
+
+                 for (BitIter=0;BitIter<4;BitIter++)
+                 {
+                     BitEnc = ColorVal >> (6-2*BitIter) & 0x03;
+                     printf("BitEnc is: %d\n",BitEnc);
+                     switch (BitEnc)
+                     {
+                         case 0:
+                         {
+                             printf("Outut 10001000\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0x88;
+
+                             break;
+                         }
+                         case 1:
+                         {
+                             printf("Outut 10001100\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0x8C;
+
+                             break;
+                         }
+                         case 2:
+                         {
+                             printf("Outut 11001000\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0xC8;
+
+                             break;
+                         }
+                         case 3:
+                         {
+                             printf("Outut 11001100\n");
+
+                             //wait for spi bus to be available
+                             while(SPI1STATbits.SPITBF == 1);
+
+                             //write data to SPI bus
+                             SPI1BUF=0xCC;
+
+                             break;
+                         }
+                     }
                 }
             }
-            //begin iteration for RED
-            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
-            {
-			//begin masking iteration loop for Red
-                if ((0x80 >> MaskingIter) & LedNum[0].Red)  
-				//if statement says: if a 0 is found in temp; produce pulse for a 0,
-				//otherwise produce a pulse for a 1
-                {
-				//this will become spi code 1000
-                    /*
-				MYSPI=1;  //use ra0  port = in; lat = out; tris = tristate
-				vTaskDelay (T0H);
-				MYSPI=0;
-				vTaskDelay (T0L);
-                     */
-                }
-			else
-                {
-                    //this will become spi code 1100
-                    /*
-				MYSPI=1;
-				vTaskDelay (T1H);
-				MYSPI=0;
-				vTaskDelay (T1L);
-                     */
-                }
-		}
-		//begin masking iteration for blue
-            for (MaskingIter=0; MaskingIter < 8; MaskingIter++)
-            {
-			//begin masking iteration loop for Green
-                if ((0x80 >> MaskingIter) & LedNum[0].Blue)  
-				//if statement says: if a 0 is found in temp; produce pulse for a 0,
-				//otherwise produce a pulse for a 1
-                {
-				//this will become spi code 1000
-                    /*
-				MYSPI=1;  //use ra0  port = in; lat = out; tris = tristate
-				vTaskDelay (T0H);
-				MYSPI=0;
-				vTaskDelay (T0L);
-                     */
-                }
-			else
-                {
-                    //this will become spi code 1100
-                    /*
-				MYSPI=1;
-				vTaskDelay (T1H);
-				MYSPI=0;
-				vTaskDelay (T1L);
-                     */
-                }
-            }
-        }        
-        
+        }
     }
-    vTaskDelete(NULL);
 }
 
 
